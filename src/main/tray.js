@@ -58,9 +58,9 @@ function generateConfigSubmenus (configs, selectedIndex) {
  */
 function generateMenus (appConfig) {
   const base = [
-    { label: 'Main', click: handler.showManagePanel },
+    { label: 'Main Window', click: handler.showManagePanel },
     {
-      label: 'Open App',
+      label: 'Run Service',
       type: 'checkbox',
       checked: appConfig.enable,
       click: handler.toggleEnable,
@@ -84,7 +84,7 @@ function generateMenus (appConfig) {
           label: 'Import from Clipboard',
           click: handler.importConfigFromClipboard,
         },
-        { label: 'Open coonfig', click: handler.openConfigFile },
+        { label: 'Open config', click: handler.openConfigFile },
       ],
     },
     { label: 'Copy http config', click: handler.copyHttpProxyCode },
@@ -108,7 +108,7 @@ function generateMenus (appConfig) {
       label: 'Proxy Mode',
       submenu: [
         {
-          label: 'No Proxy',
+          label: 'No System Proxy',
           type: 'checkbox',
           checked: appConfig.sysProxyMode === 0,
           click: e => changeProxy(e, 0, appConfig),
@@ -149,7 +149,7 @@ function getTooltip (appConfig) {
   }
   arr.push('Proxy Mode')
   if (appConfig.sysProxyMode === 0) {
-    arr.push('No Proxy')
+    arr.push('No System Proxy')
   } else if (appConfig.sysProxyMode === 1) {
     arr.push('PAC')
   } else if (appConfig.sysProxyMode === 2) {

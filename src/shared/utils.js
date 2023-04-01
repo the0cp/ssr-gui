@@ -241,7 +241,7 @@ export function groupConfigs (configs, selectedIndex) {
     }
   })
   if (ungrouped.length) {
-    groups['未分组'] = ungrouped
+    groups['Ungrouped'] = ungrouped
   }
   return groups
 }

@@ -4,7 +4,7 @@
       <Input type="text" v-model="form.group" />
     </FormItem>
     <span>
-      <Button :disabled="form.group === editingGroup.title" @click="form.group = editingGroup.title">重置</Button>
+      <Button :disabled="form.group === editingGroup.title" @click="form.group = editingGroup.title">Reset</Button>
       <Button class="ml-1" type="primary" @click="rename">Save</Button>
     </span>
   </Form>
