@@ -1,5 +1,6 @@
 import { createServer } from 'net'
 import logger from './logger'
+import { appConfig$ } from './data'
 
 /**
  * @param {String} host
@@ -36,4 +37,14 @@ export function isHostPortValid (host, port) {
  */
 export function isPortValid (port) {
   return Promise.all([isHostPortValid('0.0.0.0', port), isHostPortValid('127.0.0.1', port)])
+}
+
+export async function waitPort (host, port) {
+  try {
+    await isHostPortValid(host, port)
+    return "ok"
+  } catch(e){
+    logger.info('waiting port')
+    waitPort(host, port)
+  }
 }

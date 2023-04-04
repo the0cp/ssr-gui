@@ -1,9 +1,10 @@
 import path from 'path'
 import { execFile } from 'child_process'
 // import treeKill from 'tree-kill'
-import { dialog } from 'electron'
-import { appConfig$ } from './data'
+import { app, dialog } from 'electron'
+import { appConfig$, currentConfig } from './data'
 import { isHostPortValid } from './port'
+import { waitPort } from './port'
 import logger from './logger'
 import { isConfigEqual } from '../shared/utils'
 import { showNotification } from './notification'
@@ -30,7 +31,7 @@ export function runCommand (command, params) {
  */
 export async function run (appConfig) {
   const listenHost = appConfig.shareOverLan ? '0.0.0.0' : '127.0.0.1'
-  await stop()
+  await stop(false)
   try {
     await isHostPortValid(listenHost, appConfig.localPort || 1080)
   } catch (e) {
@@ -94,23 +95,31 @@ export function stop (force = false) {
     return new Promise((resolve, reject) => {
       child.once('close', () => {
         child = null
+        
+        /*
         if (timeout) {
           clearTimeout(timeout)
         }
+        */
         resolve()
       })
+      
+      /*
       const timeout = setTimeout(() => {
         logger.error(`Thread ${child.pid} may not closed`)
         !force && showNotification(`Thread ${child.pid} may not closed`)
         resolve()
       }, 5000)
+      */
+      const listenHost = currentConfig.shareOverLan ? '0.0.0.0' : '127.0.0.1'
+      waitPort(listenHost, currentConfig.localPort || 1080)
       process.kill(child.pid, 'SIGKILL')
+      
       // child.kill()
       // treeKill(child.pid, 'SIGKILL', err => {
       //   if (err) {
       //     reject(err)
       //   } else {
-      //     // TODO: delay to ensure port not occupied
       //     setTimeout(() => {
       //       child = null
       //       resolve()
@@ -140,7 +149,7 @@ appConfig$.subscribe(data => {
       if (appConfig.enable) {
         runWithConfig(appConfig)
       } else {
-        stop()
+        stop(false)
       }
     } else if (appConfig.enable) {
       if (['ssrPath', 'index', 'localPort', 'shareOverLan'].some(key => changed.indexOf(key) > -1)) {
@@ -148,7 +157,7 @@ appConfig$.subscribe(data => {
       }
       if (changed.indexOf('configs') > -1) {
         if (!appConfig.configs.length) {
-          stop()
+          stop(false)
         } else if (!oldConfig.configs.length) {
           runWithConfig(appConfig)
         } else if (!isConfigEqual(appConfig.configs[appConfig.index], oldConfig.configs[oldConfig.index])) {
