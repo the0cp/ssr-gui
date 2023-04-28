@@ -1,8 +1,9 @@
-# ShadowsocksR-Native GUI
+# ShadowsocksR-Native GUI ![logo](https://github.com/the0cp/ssr-gui/blob/main/build/icons/48x48.png)
 
 ![platform](https://img.shields.io/badge/Platform-Linux-orange)
 ![license](https://img.shields.io/npm/l/express)
 ![repo-size](https://img.shields.io/github/repo-size/the0cp/ssr-gui)
+
 
 GUI Client for SS/SSR/SSR-N([ShadowsocksR-native](https://github.com/ShadowsocksR-Live/shadowsocksr-native))
 Based on [erguotou520/electron-ssr](https://github.com/erguotou520/electron-ssr)
